@@ -12,7 +12,7 @@ class Equation():
 def solve_degre_one(reduced: Equation, logger: Logger):
 	res = (reduced.equation[0] * -1) / reduced.equation[1]
 	print("The solution is:")
-	logger.info(f"Fraction : {(reduced.equation[0] * -1)} / {reduced.equation[1]}\nDecimal : ", end='')
+	logger.info(f"Fraction : {(reduced.equation[0] * -1)} / {reduced.equation[1]}\nDecimal : ", end_char="")
 	print(f"{res}")
 
 
@@ -53,12 +53,19 @@ def solve_degre_two(reduced: Equation, logger: Logger):
 
 def print_reduced_form(reduc: Equation, degree):
 	print("Reduced form: ", end="")
-	print(reduc.equation[0], end="")
-	print(f" + {reduc.equation[1]} * X", end="")
-	if degree == 2:
-		print(f" + {reduc.equation[2]} * X^2", end="")
-	print(" = 0")
-
+	string = ""
+	if reduc.equation[0] != 0 or degree == 0:
+		string += f"{reduc.equation[0]}"
+		if degree > 0:
+			string += " + "
+	if reduc.equation[1] != 0:
+		string += f"({reduc.equation[1]} * X)"
+		if degree > 1:
+			string += " + "
+	if reduc.equation[2] != 0:
+		string += f"({reduc.equation[2]} * X^2)"
+	string += " = 0"
+	print(string)
 
 def solve(left, right, vb):
 	logger = Logger("Solver", vb)
@@ -75,6 +82,7 @@ def solve(left, right, vb):
 		solve_degre_one(reduced, logger)
 	else:
 		print("Polynomial degree : 0")
+		print_reduced_form(reduced, 0)
 		print("There is no solutions for degree 0.")
 
 
